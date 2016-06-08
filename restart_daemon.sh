@@ -18,11 +18,13 @@ set -eu
 
 phrase="$1"
 service_dir="$HOME/service"
+svc_bin='/usr/local/bin/svc'
 seconds='2'	# Seconds we will wait for the process to be restarted.
 
 function getpid {
 	pid="$(ps ux | grep -v 'supervise' | grep -e '?' \
-		| grep -e "${phrase}" | grep -v 'grep' | awk '{print $2}')"
+		| grep -e "${phrase}" | grep -v 'grep' | awk '{print $2}' \
+			| sort | awk 'NR==1{print $1}')"
 	case ${n} in
 		0)	pid0="${pid}"
 			;;
@@ -35,7 +37,7 @@ function getpid {
 }
 
 function restart_daemon {
-	svc -du ${service_dir}/${phrase}
+	${svc_bin} -du ${service_dir}/${phrase}
 }
 
 n="0"
