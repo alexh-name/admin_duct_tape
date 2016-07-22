@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # This script crawls recipients from local mail files and creates a CSV of
-# contacts. Recipients of the form NAME <ADRESS> are prioritized over
-# ADRESS only to avoid duplication.
+# contacts. Recipients of the form NAME <ADDRESS> are prioritized over
+# ADDRESS only to avoid duplication.
 
 # Usage: sh extract_mail_contacts.sh Maildir/.Sent/cur/
 
