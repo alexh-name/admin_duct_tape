@@ -64,7 +64,7 @@ function merge {
   cp ${tmpdir}/unsorted_contacts.tmp ${tmpdir}/unsorted_merged_contacts.tmp
   while read line; do
     address="$(cut -d ',' -f2 <<<${line})"
-    if ! grep "${address}" ${tmpdir}/unsorted_contacts.tmp >/dev/null 2>&1; then
+    if ! grep -i "${address}" ${tmpdir}/unsorted_contacts.tmp >/dev/null 2>&1; then
       printf "%s\n" "${line}" >> ${tmpdir}/unsorted_merged_contacts.tmp
     fi
   done < ${tmpdir}/unsorted_addresses.tmp
