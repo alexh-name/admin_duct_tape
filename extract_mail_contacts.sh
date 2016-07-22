@@ -5,6 +5,7 @@
 # ADDRESS only to avoid duplication.
 
 # Usage: sh extract_mail_contacts.sh Maildir/.Sent/cur/
+# Multiple directories allowed.
 
 # To decode non-ASCII contact names you need imap_mime_header_decoder.php
 # or some own replacement.
@@ -23,13 +24,14 @@
 
 ##set -eu
 ##n=1
-dir=$1
+
 decoder="php ./imap_mime_header_decoder.php"
 
+files="$(find "$@" -type f)"
 
 function extract() {
   m_l_file="${tmpdir}/merged_lines_file"
-  find "${dir}" -type f | while read file; do
+  while read file; do
     sed '$!N;s/\n / /;P;D' "${file}" > ${m_l_file}
     # there can be line breaks inside the list of rcpts
     line="$(awk '/^To:\ .*@.*/{print $0; exit}' ${m_l_file})"
@@ -57,7 +59,7 @@ function extract() {
       ##printf "\n"
     done
     ##n="$(( ${n} + 1 ))"
-  done
+  done <<<"${files}"
 }
 
 function merge {
