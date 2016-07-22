@@ -29,7 +29,7 @@ decoder="php ./imap_mime_header_decoder.php"
 
 function extract() {
   m_l_file="${tmpdir}/merged_lines_file"
-  find ${dir} -type f | while read file; do
+  find "${dir}" -type f | while read file; do
     sed '$!N;s/\n / /;P;D' "${file}" > ${m_l_file}
     # there can be line breaks inside the list of rcpts
     line="$(awk '/^To:\ .*@.*/{print $0; exit}' ${m_l_file})"
