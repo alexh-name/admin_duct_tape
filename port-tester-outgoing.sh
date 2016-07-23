@@ -1,10 +1,25 @@
 #!/bin/sh
 
-max=$1
-n="1"
-url="portquiz.net"
+# Check whether outgoing ports are allowed.
+# Single or multiple ports and ranges are accepted.
+# PORT / PORT1 PORT2 PORT3 ... / LOW_PORT-HIGH_PORT
 
-until [[ ${n} -gt ${max} ]]; do
-  nc -z ${url} ${n}
-  n=$(( ${n} + 1 ))
-done
+set -eu
+
+args=$@
+url='portquiz.net'
+cmd="nc -z ${url}"
+
+if [[ $# -eq 1 ]]; then
+  function="${cmd} ${args}"
+else
+  function='cycling_check'
+fi
+
+function cycling_check() {
+  while read port; do
+    ${cmd} ${port}
+  done <<<"$( tr ' ' '\n' <<<${args})"
+}
+
+${function}
