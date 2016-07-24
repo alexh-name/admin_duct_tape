@@ -23,11 +23,16 @@
 
 set -eu
 
-min_length=${1:-30}
-
 dict='/usr/share/dict/words'
 
-n_words="$(wc -l ${dict} | awk '{print $1;}')"
+if [[ ! -f "${dict}" ]]; then
+  echo "Dictionary "${dict}" not found."
+  exit 1
+fi
+
+min_length=${1:-30}
+
+n_words="$(wc -l "${dict}" | awk '{print $1;}')"
 
 function rng() {
   if [[ -x "$(which shuf)" ]]; then
@@ -40,9 +45,9 @@ function rng() {
  
 function roll() {
   rng
-  n='1'
+  n='0'
   while read n_line; do
-    array[${n}]="$(awk 'NR=="'$n_line'"{print $1;}' ${dict})"
+    array[${n}]="$(awk 'NR=="'$n_line'"{print $1;}' "${dict}")"
     n=$(( ${n} + 1 ))
   done <<<"${random_lines}"
 }
