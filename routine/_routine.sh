@@ -7,7 +7,7 @@ ${dir}/load.sh"
 
 V=$1
 
-function fire() {
+function fire {
   script=$1
   v=$2
   output="$( nice -n 10 mksh ${script} )"
@@ -16,7 +16,7 @@ function fire() {
   fi
 }
 
-function cycle() {
+function cycle {
   while read script; do
     fire $script $V
   done <<<"${SCRIPTS}"
