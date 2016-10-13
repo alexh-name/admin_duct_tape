@@ -2,6 +2,7 @@
 
 # Split multiple complete mails (including headers) that are encapsuled into one
 # and forward them to recipients defined in each single mail's "To" field.
+# For feed is our delimiter here.
 
 set -eu
 
