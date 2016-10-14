@@ -4,7 +4,7 @@
 # one. If it was, the next command in .qmail will be executed. If not, the mail
 # won't be processed any further.
 # e.g.:
-# | /usr/local/bin/filter_untrusted-origin
+# | /usr/local/bin/filter_untrusted-origin TRUSTED_ORIGIN_FILE
 # | /usr/local/bin/split_multimail
 # ./Maildir/
 
