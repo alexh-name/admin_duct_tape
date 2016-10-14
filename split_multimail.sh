@@ -17,7 +17,6 @@ MAILS="$(</dev/stdin)"
 # Count of delimiters actually
 N_MAILS="$( grep -c "\f" <<<"${MAILS}" )"
 
-array=()
 
 function cut {
   awk 'BEGIN { RS = "\f" }; NR=="'${NR}'"' <<<"${MAILS}"
@@ -27,7 +26,6 @@ function split {
   # we don't want the first and last record
   n=2
   until [[ ${n} -gt ${N_MAILS} ]]; do
-    count=$(( ${n} - 1 ))
     NR=${n}
     mail="$( cut )"
     array+=("${mail}")
@@ -37,6 +35,7 @@ function split {
 
 function forward {
   n=2
+  array=()
   until [[ ${n} -gt ${N_MAILS} ]]; do
     # arrays start at 0
     array_n=$(( ${n} - 2 ))
