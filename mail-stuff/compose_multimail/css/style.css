@@ -1,0 +1,15 @@
+body {
+  padding: 1em;
+  background: #eee;
+}
+label {
+  margin-top: 10px;
+}
+#error {
+  display: none;
+  font-weight: bold;
+  padding: 10px;
+  color: red;
+  border-bottom: solid red;
+  margin: 10px;
+}
