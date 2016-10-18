@@ -20,13 +20,14 @@
       <label for="textarea">Message:</label>
       <textarea required id="body" class="form-control" rows="10" placeholder="Dear..."></textarea>
     </div>
-    <button id="btn-trigger" class="btn btn-primary" onclick="trigger();">Next message</button>
+    <button id="btn-trigger" class="btn btn-primary" onclick="trigger();">Save Message / Next Message</button>
     <span id="error">Complete input!</span>
     <div class="form-group">
       <label id="mm-counter" for="textarea">Multimail (0):</label>
       <textarea readonly id="mmarea" class="form-control js-copytextarea" rows="10" placeholder="Send to land-post@jugendrettet.org"></textarea>
     </div>
     <button class="btn btn-primary js-textareacopybtn">Copy Multimail to Clipboard</button>
+    <button class="btn btn-primary" onclick="reset();">Reset and begin new Multimail</button>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script src="js/index.js"></script>
   </body>

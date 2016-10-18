@@ -72,6 +72,14 @@ function trigger() {
   };
 }
 
+// Reset completely
+function reset() {
+  flush();
+  new_msg = '';
+  msgs = '';
+  mm_counter = 0;
+}
+
 // Copy multimail to clipboard
 var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
 
