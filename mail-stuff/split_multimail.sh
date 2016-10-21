@@ -18,11 +18,15 @@ FORWARDBIN=/var/qmail/bin/forward
 # mess822 822field location
 M822FIELD=/usr/local/bin/822field
 
+INPUT=''
+MAILS=''
 DECODE=''
 TO_LOG=''
 TO_FILE=''
 APPEND=''
 MSG_FILE=''
+N_R=''
+array=()
 
 while getopts dt:m: name; do
   case $name in
@@ -35,18 +39,19 @@ while getopts dt:m: name; do
   esac
 done
 
+INPUT="$(</dev/stdin)"
 
-# Concatenated and by form feed delimited mails
-MAILS="$( awk 'BEGIN { RS = "\n\n" }; NR=="2"' </dev/stdin )"
+function prepare {
+  MAILS="${INPUT}"
 
-if [[ ${DECODE} -eq 1 ]]; then
-  MAILS="$( base64 -d <<<"${MAILS}" )"
-fi
+  if [[ ${DECODE} -eq 1 ]]; then
+    MAILS="$( awk 'BEGIN { RS = "\n\n" }; NR=="2"' <<<"${MAILS}" )"
+    MAILS="$( base64 -di <<<"${MAILS}" )"
+  fi
 
-# Number of Records
-N_R="$( grep -c $'^\f' <<<"${MAILS}" )"
-
-array=()
+  # Number of Records
+  N_R="$( grep -c $'^\f' <<<"${MAILS}" )"
+}
 
 function cut {
   awk 'BEGIN { RS = "\f" }; NR=="'${NR}'"' <<<"${MAILS}"
@@ -57,7 +62,7 @@ function split {
   n=2
   until [[ ${n} -gt ${N_R} ]]; do
     NR=${n}
-    mail="$( cut )"
+    mail="$( cut || (echo 'cut failed'; exit 99) )"
     array+=("${mail}")
     n=$(( ${n} + 1 ))
   done
@@ -82,11 +87,12 @@ function forward {
       echo "${to_list}" >> "${TO_FILE}"
     fi
     while read to; do
-      ${FORWARDBIN} ${to} <<<"${msg}"
+      ${FORWARDBIN} "${to}" <<<"${msg}"
     done <<<"${to_list}"
     n=$(( ${n} + 1 ))
   done
 }
 
-split
-forward
+prepare || (echo 'prepare failed'; exit 99)
+split || (echo 'split failed'; exit 99)
+forward || (echo 'forward failed'; exit 99)
