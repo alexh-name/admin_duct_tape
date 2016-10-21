@@ -62,7 +62,7 @@ function split {
   n=2
   until [[ ${n} -gt ${N_R} ]]; do
     NR=${n}
-    mail="$( cut || (echo 'cut failed'; exit 99) )"
+    mail="$( cut )" || (echo 'cut failed'; exit 99) 
     array+=("${mail}")
     n=$(( ${n} + 1 ))
   done
