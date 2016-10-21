@@ -73,11 +73,17 @@ function forward {
       appendix="$( <"${MSG_FILE}" )"
       msg="${msg} ${appendix}"
     fi
-    to="$( ${M822FIELD} To <<<"${msg}" )"
+    to_list="$(
+      ${M822FIELD} To <<<"${msg}" \
+      | sed -e 's/[;,]/ /g' -e 's/^ //g' -e 's/ \+/ /g' -e 's/[<>]//g' \
+        -e "s/ /\n/g"
+    )"
     if [[ ${TO_LOG} -eq 1 ]]; then
-      echo ${to} >> "${TO_FILE}"
+      echo "${to_list}" >> "${TO_FILE}"
     fi
-    ${FORWARDBIN} ${to} <<<"${msg}"
+    while read to; do
+      ${FORWARDBIN} ${to} <<<"${msg}"
+    done <<<"${to_list}"
     n=$(( ${n} + 1 ))
   done
 }
