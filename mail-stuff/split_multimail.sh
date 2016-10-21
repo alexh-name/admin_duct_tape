@@ -10,6 +10,8 @@
 #             (TO_FILE must be writable by user owning .qmail.)
 # -m MSG_FILE: Append text to each forwarded mail contained in MSG_FILE.
 #             (MSG_FILE must be readable by user owning .qmail.)
+# -e EXIT_CODE: Exit code to use if something goes wrong. Use 99 to report
+#               success to qmail, 100 for failure. Default: 100.
 
 set -eu
 
@@ -28,13 +30,14 @@ MSG_FILE=''
 N_R=''
 array=()
 
-while getopts dt:m: name; do
+while getopts dt:m:e: name; do
   case $name in
     d)  DECODE=1;;
     t)  TO_LOG=1
         TO_FILE="$OPTARG";;
     m)  APPEND=1
         MSG_FILE="$OPTARG";;
+    e)  EXIT_CODE_IN="$OPTARG";;
     ?)  exit 2;;
   esac
 done
@@ -42,6 +45,8 @@ done
 INPUT="$(</dev/stdin)"
 
 function prepare {
+  EXIT_CODE=${EXIT_CODE_IN:-100}
+
   MAILS="${INPUT}"
 
   if [[ ${DECODE} -eq 1 ]]; then
@@ -62,7 +67,7 @@ function split {
   n=2
   until [[ ${n} -gt ${N_R} ]]; do
     NR=${n}
-    mail="$( cut )" || (echo 'cut failed'; exit 100)
+    mail="$( cut )" || (echo 'cut failed'; exit ${EXIT_CODE})
     array+=("${mail}")
     n=$(( ${n} + 1 ))
   done
@@ -93,6 +98,6 @@ function forward {
   done
 }
 
-prepare || (echo 'prepare failed'; exit 100)
-split || (echo 'split failed'; exit 100)
-forward || (echo 'forward failed'; exit 100)
+prepare || (echo 'prepare failed'; exit ${EXIT_CODE})
+split || (echo 'split failed'; exit ${EXIT_CODE})
+forward || (echo 'forward failed'; exit ${EXIT_CODE})
