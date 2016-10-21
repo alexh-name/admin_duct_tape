@@ -24,5 +24,5 @@ if grep -E "^Received: \(${TRUSTED_ORIGIN}\)" <<<"${LAST_REC}" \
  else
   # so qmail will not do any further deliveries in .qmail file
   echo 'Origin not trusted.'
-  exit 99
+  exit 100
 fi

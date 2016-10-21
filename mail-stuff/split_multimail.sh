@@ -62,7 +62,7 @@ function split {
   n=2
   until [[ ${n} -gt ${N_R} ]]; do
     NR=${n}
-    mail="$( cut )" || (echo 'cut failed'; exit 99) 
+    mail="$( cut )" || (echo 'cut failed'; exit 100)
     array+=("${mail}")
     n=$(( ${n} + 1 ))
   done
@@ -93,6 +93,6 @@ function forward {
   done
 }
 
-prepare || (echo 'prepare failed'; exit 99)
-split || (echo 'split failed'; exit 99)
-forward || (echo 'forward failed'; exit 99)
+prepare || (echo 'prepare failed'; exit 100)
+split || (echo 'split failed'; exit 100)
+forward || (echo 'forward failed'; exit 100)
