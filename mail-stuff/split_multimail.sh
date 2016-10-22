@@ -50,7 +50,11 @@ function prepare {
   MAILS="${INPUT}"
 
   if [[ ${DECODE} -eq 1 ]]; then
-    MAILS="$( awk 'BEGIN { RS = "\n\n" }; NR=="2"' <<<"${MAILS}" )"
+    MAILS="$(
+      grep -E \
+      "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$" \
+      <<<"${MAILS}"
+    )"
     MAILS="$( base64 -di <<<"${MAILS}" )"
   fi
 
