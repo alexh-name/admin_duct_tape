@@ -3,7 +3,8 @@
 dir="$HOME/scripts/routine"
 
 SCRIPTS="${dir}/space.sh
-${dir}/load.sh"
+${dir}/load.sh
+${dir}/queue.sh"
 
 V=$1
 
