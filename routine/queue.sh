@@ -7,7 +7,7 @@ problem=''
 problem_msg='
 --- smth stuck in queue ---'
 
-out=$( qmailctl stat | grep 'messages in queue:' )
+out=$( /usr/local/bin/qmailctl stat | grep 'messages in queue:' )
 out_part=$( rev <<<"${out}" | cut -f 1 -d ' ' )
 
 if (( "${out_part}" != 0 )) ; then
