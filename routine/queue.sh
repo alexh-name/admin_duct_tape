@@ -20,7 +20,7 @@ out=$(
     else
       status='fine'
     fi
-    printf "msg %s: %s - %s" "${msg_n}\n" "${birth_f}" "${status}"
+    printf "msg %s: %s - %s\n" "${msg_n}" "${birth_f}" "${status}"
   done
  )
 out_part="$( rev <<<"${out}" | cut -f 1 -d ' ' | rev )"
