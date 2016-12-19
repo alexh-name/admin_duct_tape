@@ -2,7 +2,7 @@
 
 set -eu
 
-problem=''
+problem='0'
 
 problem_msg='
 --- smth stuck in queue ---'
