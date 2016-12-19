@@ -15,7 +15,7 @@ out=$(
     birth_f="$( stat --printf="%y\n" "${msg}" )"
     date="$( date +%s )"
     age="$(( ${date} - ${birth} ))"
-    if (( "${age}" > '3600' )); then
+    if (( "${age}" > '43200' )); then
       status='alarming'
     else
       status='fine'
