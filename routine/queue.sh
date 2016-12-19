@@ -10,7 +10,7 @@ problem_msg='
 out=$(
   find /var/qmail/queue/mess/ -type f \
   | while read msg; do
-    msg_n="$( rev <<<"${msg}" | cut -d '/' -f 1 | rev )"
+    msg_n="$( rev <<<"${msg}" | cut -d '/' -f -2 | rev )"
     birth="$( stat --printf="%Y\n" "${msg}" )"
     birth_f="$( stat --printf="%y\n" "${msg}" )"
     date="$( date +%s )"
