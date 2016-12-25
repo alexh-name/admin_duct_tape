@@ -47,35 +47,35 @@ set -eu
 
 dict='/usr/share/dict/words'
 
-if [[ ! -f "${dict}" ]]; then
-  echo "Dictionary "${dict}" not found."
+if [ ! -f "${dict}" ]; then
+  echo "Dictionary ${dict} not found."
   exit 1
 fi
 
-min_length=${1:-30}
+min_length="${1:-30}"
 
-n_words="$(wc -l "${dict}" | awk '{print $1;}')"
+n_words="$( wc -l "${dict}" | awk '{print $1;}' )"
 
-function rng() {
-  if [[ -x "$(which shuf)" ]]; then
-    random_lines="$(shuf -i 1-${n_words} -n 4)"
+function rng {
+  if [ -x "$(which shuf)" ]; then
+    random_lines="$(shuf -i 1-"${n_words}" -n 4)"
   else
-    n_words_plus_one=$(( ${n_words} + 1 ))
-    random_lines="$(jot -w %i -r 4 1 ${n_words_plus_one})"
+    n_words_plus_one="$(( "${n_words}" + 1 ))"
+    random_lines="$( jot -w %i -r 4 1 "${n_words_plus_one}" )"
   fi
 }
  
-function roll() {
+function roll {
   rng
   n='0'
   while read n_line; do
-    array[${n}]="$(awk 'NR=="'$n_line'"{print $1;}' "${dict}")"
-    n=$(( ${n} + 1 ))
+    array[${n}]="$( awk 'NR=="'$n_line'"{print $1;}' "${dict}" )"
+    n="$(( ${n} + 1 ))"
   done <<<"${random_lines}"
 }
 
 length='0'
-while [[ ${length} -lt ${min_length} ]]; do
+while (( ${length} < ${min_length} )); do
   roll
   length="$(wc -m <<<"${array[@]}")"
 done
