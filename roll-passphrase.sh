@@ -69,13 +69,13 @@ function roll {
   rng
   n='0'
   while read n_line; do
-    array[${n}]="$( awk 'NR=="'$n_line'"{print $1;}' "${dict}" )"
+    array[${n}]="$( awk 'NR=="'${n_line}'"{print $1;}' "${dict}" )"
     n="$(( ${n} + 1 ))"
   done <<<"${random_lines}"
 }
 
 length='0'
-while (( ${length} < ${min_length} )); do
+while (( "${length}" < "${min_length}" )); do
   roll
   length="$(wc -m <<<"${array[@]}")"
 done
