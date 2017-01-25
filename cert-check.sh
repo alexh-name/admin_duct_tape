@@ -6,11 +6,13 @@ NL='
 '
 OUT=''
 VAL=''
+NAME=''
 
-while getopts h:v name; do
+while getopts h:vn name; do
   case $name in
     h)  HOST="${OPTARG}";;
     v)  VAL='1';;
+    n)  NAME='1';;
     ?)  exit 2;;
   esac
 done
@@ -24,7 +26,7 @@ OUT_ALL="$(
 if [[ "${VAL}" == '1' ]]; then
   OUT_VAL="$(
     grep -E "Not (Before|After)" <<<"${OUT_ALL}" \
-    | sed 's/^\ +//g' \
+    | sed 's/^\ *//g' \
     | cut -d ':' -f 2-
   )"
   OUT_BEF="$( awk 'NR == 1' <<<"${OUT_VAL}" )"
@@ -34,6 +36,15 @@ if [[ "${VAL}" == '1' ]]; then
   SEC_UNTIL=$(( ${AFT_EPOCH} - ${NOW_EPOCH} ))
   OUT_UNTIL="$(( ${SEC_UNTIL} / 86400 ))"
   OUT="${OUT}${NL}Valid since:${OUT_BEF}${NL}Valid until:${OUT_AFT}${NL}Days left: ${OUT_UNTIL}"
+fi
+
+if [[ "${NAME}" == '1' ]]; then
+  OUT_NAME="$(
+    grep -E "Subject: CN=.*" <<<"${OUT_ALL}" \
+    | sed 's/^\ *//g' \
+    | cut -d '=' -f 2
+  )"
+  OUT="${OUT}${NL}CN: ${OUT_NAME}"
 fi
 
 printf "%s\n" "${OUT}"
