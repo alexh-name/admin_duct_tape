@@ -14,7 +14,7 @@ MAILLOG='/var/log/maillog'
 LAST_SENT_LIST='/var/last_sent_list.txt'
 
 cat "${USERS}" | while read usr; do
-  last_sent="$( \
+  last_sent="$(
     egrep "info msg [0-9]+: bytes [0-9]+ from <${usr}> qp [0-9]+ uid [0-9]" "${MAILLOG}" \
     | tail -n1 \
     | awk '{print $6}'
