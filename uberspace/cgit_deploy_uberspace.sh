@@ -124,15 +124,11 @@ cp Makefile Makefile.orig
 
 sed -i \
   -e "s/^CGIT_SCRIPT_PATH =.*$/CGIT_SCRIPT_PATH = \/home\/$(whoami)\/cgi-bin/" \
+  -e "s/^CGIT_DATA_PATH =.*$/CGIT_DATA_PATH = \/var\/www\/virtual\/$(whoami)\/${DOMAIN}/" \
   -e "s/^CGIT_CONFIG =.*$/CGIT_CONFIG = \/home\/$(whoami)\/etc\/cgitrc/" \
   -e "s/^CACHE_ROOT =.*$/CGIT_CONFIG = \/home\/$(whoami)\/cache\/cgitrc/" \
   -e "s/^prefix =.*$/prefix = \/home\/$(whoami)\/local/" \
 Makefile
-if [ ! -z "${DOMAIN}" ]; then
-  sed -i \
-  "s/^CGIT_DATA_PATH =.*$/CGIT_DATA_PATH = \/var\/www\/virtual\/$(whoami)\/${DOMAIN}/" \
-  Makefile
-fi
 
 echo '-- Modified Makefile for Uberspace. Original copied to Makefile.orig.'
 
@@ -146,7 +142,5 @@ make install
 ################################################################################
 
 echo '---- done!'
-if [ ! -z "${DOMAIN}" ]; then
-  echo "---- cgit is now available at https://${DOMAIN}."
-fi
+echo "---- cgit is now available at https://${DOMAIN}."
 
