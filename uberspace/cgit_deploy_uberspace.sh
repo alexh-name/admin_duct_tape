@@ -52,6 +52,8 @@ fi
 ################################################################################
 # HTTPS
 
+FIRST_TIME_LE=0
+
 function cert_check_domain_imported {
   uberspace-list-certificates | fgrep "${DOMAIN}" >/dev/null
 }
@@ -76,6 +78,7 @@ else
   # check if letsencrypt was already configured
   le_config="/home/"$(whoami)"/.config/letsencrypt/cli.ini"
   if [ ! -f "${le_config}" ]; then
+    FIRST_TIME_LE=1
     echo '-- First time run uberspace-letsencrypt...'
     uberspace-letsencrypt
   fi
@@ -148,4 +151,11 @@ make install
 
 echo '---- done!'
 echo "---- cgit is now available at https://${DOMAIN}."
+
+if [ ${FIRST_TIME_LE} -eq 1 ]; then
+  echo "Let's Encrypt wasn't configured before."
+  echo "You might want to add"
+  echo "  @daily /usr/local/bin/uberspace-letsencrypt-renew"
+  echo "to your cron to automatically renew the cert, when needed."
+fi
 
