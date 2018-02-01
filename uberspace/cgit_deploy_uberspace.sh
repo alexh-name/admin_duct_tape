@@ -1,5 +1,10 @@
 #!/bin/sh
-# Automatically deploy cgit on Uberspace
+# Automatically deploy cgit on Uberspace:
+# - create folder for domain
+# - create .htaccess with HTTPS enforcement
+# - add domain to web server config
+# - get cert from Let's Encrypt if no matching cert is already available
+# - fully install cgit via modified Makefile
 # Usage: ./this-script DOMAIN
 
 set -eu
