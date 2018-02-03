@@ -54,7 +54,7 @@ fi
 
 FIRST_TIME_LE=0
 
-function cert_check_domain_imported {
+function cert_domain_imported {
   uberspace-list-certificates | fgrep "${DOMAIN}" >/dev/null
 }
 
@@ -71,7 +71,7 @@ function cert_le_contains_domain {
   cert-info --file "${CERTFILE}" --alt | fgrep "${DOMAIN}" >/dev/null
 }
 
-if cert_check_domain_imported; then
+if cert_domain_imported; then
   echo "-- Cert for ${DOMAIN} already available."
 else
   echo "-- Getting a cert from Let's Encrypt for ${DOMAIN}..."
@@ -100,7 +100,7 @@ else
   fi
 
   # import cert, if it has DOMAIN as alt
-  uberspace-add-certificate -k "${certdir}/privkey.pem" -c "${certdir}/cert.pem"
+  uberspace-add-certificate -k "${CERTDIR}/privkey.pem" -c "${CERTDIR}/cert.pem"
   # check if DOMAIN is now imported
   if cert_domain_imported; then
     echo "-- Cert for ${DOMAIN} ready now."
