@@ -96,7 +96,7 @@ else
       exit 1
     fi
   else
-    echo "-- ${URL} already in newest LE cert."
+    echo "-- ${DOMAIN} already in newest LE cert."
   fi
 
   # import cert, if it has DOMAIN as alt
