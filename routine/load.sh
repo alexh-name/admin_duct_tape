@@ -8,7 +8,9 @@ problem_msg='
 --- high load ---'
 
 out="$( uptime )"
-out_part="$( awk '{print $11}' <<<"${out}" | sed -e 's/\.//' -e 's/,//' )"
+out_part="$(
+  rev <<<"${out}" | awk '{print $2}' | rev | sed -e 's/\.//' -e 's/,//'
+)"
 
 if [[ "${out_part}" -gt 85 ]] ; then
   out="${out}${problem_msg}"
