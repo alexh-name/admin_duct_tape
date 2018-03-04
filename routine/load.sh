@@ -9,7 +9,7 @@ problem_msg='
 
 out="$( uptime )"
 out_part="$(
-  rev <<<"${out}" | awk '{print $2}' | rev | sed -e 's/\.//' -e 's/,//'
+  rev <<<"${out}" | awk '{print $2}' | rev | sed -e 's/\.//' -e 's/,//g'
 )"
 
 if [[ "${out_part}" -gt 85 ]] ; then
