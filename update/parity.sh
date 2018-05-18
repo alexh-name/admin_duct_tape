@@ -23,7 +23,7 @@ function parity_bin {
   PARITY_BIN_URL="$(
     echo "${PARITY_BIN}" \
     | awk '{print $5}' \
-    | sed -e 's/^\[parity\](//' -e 's/).*$//' -e 's/^http/https/'
+    | sed -e 's/^\[parity\](//' -e 's/).*$//' -e 's/^http:/https:/'
   )"
 
   # The list provides a md5sum, ugh.
@@ -55,7 +55,7 @@ function parity_hash {
   PARITY_HASH_URL="$(
     echo "${PARITY_HASH}" \
     | awk '{print $5}' \
-    | sed -e 's/^\[parity\.sha256\](//' -e 's/).*$//' -e 's/^http/https/'
+    | sed -e 's/^\[parity\.sha256\](//' -e 's/).*$//' -e 's/^http:/https:/'
   )"
   if [ -e 'parity.256' ]; then
     echo 'parity.256 exists.'
